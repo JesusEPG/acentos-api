@@ -1,0 +1,30 @@
+{
+  "name": "acentos-api",
+  "version": "0.0.1",
+  "description": "API del backend del sistema acentos, basado en Express y Postgres",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JesusEPG/acentos-api.git"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "backend",
+    "acentos"
+  ],
+  "author": "Jesus Pernia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JesusEPG/acentos-api/issues"
+  },
+  "homepage": "https://github.com/JesusEPG/acentos-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "swagger-ui-express": "^4.1.4"
+  }
+}
