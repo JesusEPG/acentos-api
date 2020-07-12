@@ -11,7 +11,6 @@ const swaggerDoc = require('./swagger.json');
 
 const app = express();
 
-
 app.use(bodyParser.json());
 
 //Router
