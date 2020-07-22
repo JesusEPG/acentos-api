@@ -9,18 +9,22 @@ module.exports = function(injectedStore) {
     store = require('../../../store/dummy');
   }
 
-  async function login(username, password) {
-    const data = await store.query(TABLE, {username: username});
-    
-    return bcrypt.compare(password, data.password)
-      .then(passwordIsCorrect => {
-        if(passwordIsCorrect) {
-          //generar token
-          return auth.sign({id: data.id, username: data.username});
-        } else {
-          throw new Error("Informacion invalida")
-        }
-      });
+  async function login(user, password) {
+    const data = await store.query(TABLE, {username: user});
+
+    if(data.length > 0) {
+      const testPassword = await bcrypt.hash(data[0].password, 10);
+      return bcrypt.compare(password, testPassword)
+        .then(passwordIsCorrect => {
+          if(passwordIsCorrect) {
+            return auth.sign({id: data.id, username: data.username});
+          } else {
+            throw new Error("Password invalida");
+          }
+        });
+    } else {
+      throw new Error("Usuario no encontrado");
+    }  
   }
 
   async function upsert(data) {

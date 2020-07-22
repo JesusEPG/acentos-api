@@ -3,7 +3,7 @@ const db = {
     { id: '1', name: "Jesus"}
   ],
   'auth': [
-    {id: '1', name: "Jesus", password: "123"}
+    {id: '1', username: "Jesus", password: "123"}
   ]
 };
 
@@ -22,6 +22,29 @@ async function upsert(table, data) {
   }
 
   db[table].push(data);
+
+  return data;
+}
+
+async function insert(table, data) {
+  if(!db[table]){
+    db[table] = [];
+  }
+
+  db[table].push(data);
+
+  return data;
+}
+
+async function update(table, data) {
+  const indexToUpdate = db[table].findIndex(item => item.id === data.id);
+  
+  if(indexToUpdate === -1 ){
+    throw new Error("No se encontro el usuario");
+  }
+
+  console.log("indexToUpdate ", indexToUpdate)
+  db[table][indexToUpdate] = data;
 
   return data;
 }
@@ -50,6 +73,8 @@ module.exports = {
   list,
   get,
   upsert,
+  insert,
+  update,
   remove,
   query
 };
