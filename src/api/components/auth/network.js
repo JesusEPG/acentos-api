@@ -8,10 +8,9 @@ const router = express.Router();
 router.post('/login', login);
 
 function login (req, res, next) {
-  const { username, password } = req.body;
-  Controller.login(username, password)
+  const { email, password } = req.body;
+  Controller.login(email, password)
     .then(token => {
-      console.log("TOKEN:", token)
       response.success(req, res, token, 200);
     })
     .catch(next);

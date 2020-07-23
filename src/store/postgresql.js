@@ -27,12 +27,16 @@ function get(table, id) {
   });
 }
 
-function query(table, q) {
+function query(table, q, joinTable) {
   return new Promise((resolve, reject) => {
-    const keys = Object.keys(q);
-    const key = keys[0];
-    console.log(`SELECT * from ${table} WHERE ${key} = ${q[key]}`);
-    pool.query(`SELECT * from ${table} WHERE ${key} = '${q[key]}'`, (error, results) => {
+    const key = Object.keys(q)[0];
+    let joinQuery = '';
+
+    if(joinTable) {
+      joinQuery = `INNER JOIN ${joinTable} ON ${table}.fk_${joinTable} = ${joinTable}.id_${joinTable}`;
+    }
+    
+    pool.query(`SELECT * from ${table} ${joinQuery} WHERE ${joinTable}.${key} = '${q[key]}'`, (error, results) => {
       if(error) {
         return reject(error);
       }
