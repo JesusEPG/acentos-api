@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const auth = require("../../../auth");
+const CustomError = require('../../../utils/error');
 const TABLE = 'student';
 
 module.exports = function(injectedStore) {
@@ -23,12 +24,38 @@ module.exports = function(injectedStore) {
           if(passwordIsCorrect) {
             return auth.sign({id: data.id, username: data.username});
           } else {
-            throw new Error("Password invalida");
+            throw CustomError("Password invalida", 400);
           }
         });
     } else {
-      throw new Error("Usuario no encontrado");
+      throw  CutomError("Usuario no encontrado", 400);
     }  
+  }
+
+  async function register (data) {
+
+    let joinTable = 'auth';
+    const query = {email: data.email}
+
+    try {
+      const users = await store.query(TABLE, query, joinTable);
+      if(users.length > 0) {
+        throw new Error('Email ingresado ya esta asociado a otro usuario');
+      } else {
+        data.password = await bcrypt.hash(data.password, 10);
+        const tableFields = Object.keys(data);
+        const values = Object.values(data);
+        const paramsVariables = values.map((item, idx) => '$' + (idx+1)); 
+        const result = await store.insert('auth', tableFields, paramsVariables, values);
+
+        const student = await store.insert(TABLE, ['fk_auth'], ['$1'], [result[0].id_auth]);
+
+        return student;
+      }
+      
+    } catch (error) {
+      throw CustomError(error.message, 400);
+    }
   }
 
   async function upsert(data) {
@@ -49,6 +76,7 @@ module.exports = function(injectedStore) {
   
   return {
     upsert,
-    login
+    login,
+    register
   }
 }

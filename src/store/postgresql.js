@@ -27,6 +27,17 @@ function get(table, id) {
   });
 }
 
+function getUser(table, email) {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * from ${table} WHERE email = ${email}`, (error, results) => {
+      if(error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  });
+}
+
 function query(table, q, joinTable) {
   return new Promise((resolve, reject) => {
     const key = Object.keys(q)[0];
@@ -46,8 +57,21 @@ function query(table, q, joinTable) {
   });
 }
 
+function insert(table, tableFields, paramsVariables, data){
+  return new Promise((resolve, reject) => {
+    pool.query(`INSERT INTO ${table} (${tableFields.toString()}) VALUES (${paramsVariables.toString()}) RETURNING *`, data, (error, results) => {
+      if(error) {
+        return reject(new Error(error));
+      }
+      resolve(results.rows);
+    });
+  });
+}
+
 module.exports = {
   list,
   get,
-  query
+  getUser,
+  query,
+  insert
 }

@@ -9,6 +9,10 @@
   "basePath": "/api",
   "tags": [
     {
+      "name": "auth",
+      "description": "Operaciones sobre datos generales del usuario"
+    },
+    {
       "name": "user",
       "description": "Operaciones sobre el usuario"
     }
@@ -17,43 +21,66 @@
     "http"
   ],
   "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Iniciar sesion",
+        "operationId": "login",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Failure"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Registro",
+        "operationId": "register",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegister"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Failure"
+          }
+        }
+      }
+    },
     "/user": {
       "get": {
         "tags": [
           "user"
         ],
         "summary": "Lista los usuarios",
-        "operationId": "listUser",
+        "operationId": "listStudentUser",
         "responses": {
           "default": {
             "description": "Lista de usuarios"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Crear usuario",
-        "description": "Crear un usuario en el sistema",
-        "operationId": "createUser",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Usuario creado",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
           }
         }
       }
@@ -82,30 +109,6 @@
             "description": "successful operation"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Eliminar usuario",
-        "description": "Eliminar un usuario en el sistema",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "description": "Id del usuario a eliminar",
-            "required": true
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
       }
     }
   },
@@ -126,17 +129,42 @@
     }
   },
   "definitions": {
-    "User": {
+    "UserLogin": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "username": {
+        "email": {
           "type": "string"
         },
         "password": {
           "type": "string"
+        }
+      }
+    },
+    "UserRegister": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "recovery_question_answer": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "string"
+            }
+          }
         }
       }
     },

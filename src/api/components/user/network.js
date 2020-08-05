@@ -11,10 +11,8 @@ router.post('/', insert);
 router.put('/', update);
 
 function list(req, res, next) {
-  
   Controller.list()
     .then((userList) => {
-      console.log(userList);
       response.success(req, res, userList, 200);
     })
     .catch(next);
@@ -23,7 +21,6 @@ function list(req, res, next) {
 function get(req, res, next) {
   Controller.get(req.params.id)
     .then((user) => {
-      console.log(user);
       response.success(req, res, user, 200);
     })
     .catch(next);
@@ -32,7 +29,6 @@ function get(req, res, next) {
 function insert(req, res, next) {
   Controller.insert(req.body)
     .then((insertedUser) => {
-      console.log(insertedUser);
       response.success(req, res, insertedUser, 201);
     })
     .catch(next);
@@ -41,7 +37,6 @@ function insert(req, res, next) {
 function update(req, res, next) {
   Controller.update(req.body)
     .then((updatedUser) => {
-      console.log(updatedUser);
       response.success(req, res, updatedUser, 201);
     })
     .catch(next);

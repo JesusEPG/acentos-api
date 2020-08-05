@@ -1,4 +1,4 @@
-const TABLE = 'user';
+const TABLE = 'student';
 
 module.exports = function (injectedStore) {
   const store = injectedStore;
