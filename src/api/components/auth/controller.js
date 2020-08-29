@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 const auth = require("../../../auth");
 const CustomError = require('../../../utils/error');
 const TABLE = 'student';
@@ -33,11 +34,9 @@ module.exports = function(injectedStore) {
   }
 
   async function register (data) {
-
-    let joinTable = 'auth';
-    const query = {email: data.email}
-
-    try {
+    try { 
+      let joinTable = 'auth';
+      const query = {email: data.email}
       const users = await store.query(TABLE, query, joinTable);
       if(users.length > 0) {
         throw new Error('Email ingresado ya esta asociado a otro usuario');
@@ -52,7 +51,6 @@ module.exports = function(injectedStore) {
 
         return student;
       }
-      
     } catch (error) {
       throw CustomError(error.message, 400);
     }

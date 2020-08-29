@@ -51,14 +51,48 @@
         "tags": ["auth"],
         "summary": "Registro",
         "operationId": "register",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
+            "name": "profile_picture",
+            "in": "formData",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserRegister"
-            }
+            "type": "file"
+          },
+          {
+            "name": "first_name",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "last_name",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recovery_question_answer",
+            "in": "formData",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -143,6 +177,9 @@
     "UserRegister": {
       "type": "object",
       "properties": {
+        "profile_picture": {
+          "type": "file"
+        },
         "first_name": {
           "type": "string"
         },
